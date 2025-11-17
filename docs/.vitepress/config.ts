@@ -10,10 +10,8 @@ export default defineConfig({
   cleanUrls: true,
   
   // 重写规则
-  rewrites: (page) => {
-    if (page.startsWith('posts/') && page !== 'posts/index.md') {
-      return page.replace(/^posts\//, '')
-    }
+  rewrites: {
+    'posts/:page': ':page'
   },
   
   // 主题配置
@@ -123,16 +121,14 @@ export default defineConfig({
   },
   
   // 外观配置
-  appearance: 'force-light',
+  appearance: 'force-auto',
   
-  // 插件配置
+  // Vite 配置
   vite: {
-    plugins: [rssPlugin]
-  },
-  
-  // 构建配置
-  build: {
-    minify: 'esbuild',
-    target: 'es2020'
+    plugins: [rssPlugin()],
+    build: {
+      minify: 'esbuild',
+      target: 'es2020'
+    }
   }
 })

@@ -6,7 +6,7 @@ import './styles/custom.css'
 
 export default {
   ...DefaultTheme,
-  enhanceApp(ctx) {
+  enhanceApp(ctx: any) {
     DefaultTheme.enhanceApp?.(ctx)
     ctx.app.component('PostList', PostList)
     ctx.app.component('CategoryList', CategoryList)
