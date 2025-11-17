@@ -1,24 +1,29 @@
 <template>
   <div class="post-list" v-if="postsToRender.length">
     <article v-for="post in postsToRender" :key="post.url" class="post-card">
-      <a class="post-card__title" :href="post.url">
-        <h3>{{ post.title }}</h3>
-      </a>
-      <p class="post-card__desc">{{ post.description }}</p>
-      <div class="post-card__meta">
-        <span>{{ post.formattedDate }}</span>
-        <span class="dot" aria-hidden="true">•</span>
-        <a class="category" :href="`/categories#${post.category}`">{{ post.category }}</a>
-      </div>
-      <div class="post-card__tags">
-        <a
-          v-for="tag in post.tags"
-          :key="tag"
-          class="tag-pill"
-          :href="`/tags#${tag}`"
-        >
-          #{{ tag }}
+      <div class="post-card__body">
+        <div class="post-card__eyebrow">
+          <span>{{ post.formattedDate }}</span>
+          <span class="divider" aria-hidden="true">/</span>
+          <a :href="`/categories#${post.category}`">{{ post.category }}</a>
+        </div>
+        <a class="post-card__title" :href="post.url">
+          <h3>{{ post.title }}</h3>
         </a>
+        <p class="post-card__desc">{{ post.description }}</p>
+      </div>
+      <div class="post-card__footer">
+        <div class="post-card__tags">
+          <a
+            v-for="tag in post.tags"
+            :key="tag"
+            class="tag-chip"
+            :href="`/tags#${tag}`"
+          >
+            {{ tag }}
+          </a>
+        </div>
+        <a class="post-card__readmore" :href="post.url">阅读全文 →</a>
       </div>
     </article>
   </div>

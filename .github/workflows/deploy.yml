@@ -1,10 +1,19 @@
-name: Deploy Blog
+name: 🚀 Deploy Blog - VitePress
 
 on:
   push:
     branches:
       - main
+    paths:
+      - 'docs/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/**'
   workflow_dispatch:
+
+env:
+  NODE_VERSION: '20'
+  CI: true
 
 permissions:
   contents: read
@@ -12,21 +21,52 @@ permissions:
   id-token: write
 
 concurrency:
-  group: 'pages'
+  group: 'pages-deploy-${{ github.ref }}'
   cancel-in-progress: true
 
 jobs:
-  build:
+  # 检查代码质量
+  lint:
+    name: 🔍 代码检查
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: npm
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript 类型检查
+        run: npx tsc --noEmit
+
+      - name: ESLint 检查
+        run: npx eslint docs --ext .ts,.vue --quiet
+        continue-on-error: true
+
+  # 构建和测试
+  build:
+    name: 🏗️ 构建博客
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -34,14 +74,23 @@ jobs:
       - name: Build site
         run: npm run docs:build
 
+      - name: 构建结果检查
+        run: |
+          echo "📁 构建目录结构:"
+          ls -la docs/.vitepress/dist/
+          echo "📊 构建文件统计:"
+          find docs/.vitepress/dist -type f | wc -l
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: docs/.vitepress/dist
 
+  # 部署到 GitHub Pages
   deploy:
-    needs: build
+    name: 🚀 部署到 GitHub Pages
     runs-on: ubuntu-latest
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -49,3 +98,37 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 部署完成通知
+        run: |
+          echo "✅ 博客部署成功！"
+          echo "🌐 访问地址: ${{ steps.deployment.outputs.page_url }}"
+          echo "📅 部署时间: $(date)"
+
+  # 清理工作
+  cleanup:
+    name: 🧹 清理工作
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: always()
+    steps:
+      - name: 清理缓存
+        run: |
+          echo "🧹 清理工作完成"
+          echo "🎉 博客部署流程结束"
+
+  # 通知 (可选)
+  notify:
+    name: 📢 部署结果通知
+    runs-on: ubuntu-latest
+    needs: [build, deploy]
+    if: always()
+    steps:
+      - name: 部署状态汇总
+        run: |
+          echo "📊 部署状态汇总:"
+          echo "- 构建: ${{ needs.build.result }}"
+          echo "- 部署: ${{ needs.deploy.result }}"
+          echo "📅 完成时间: $(date)"

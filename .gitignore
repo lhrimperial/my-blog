@@ -2,6 +2,7 @@ node_modules
 .DS_Store
 dist
 .vitepress/cache
+docs/.vitepress/cache
 npm-debug.log*
 pnpm-lock.yaml
 yarn.lock

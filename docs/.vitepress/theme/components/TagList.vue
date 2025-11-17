@@ -1,36 +1,25 @@
 <template>
-  <section>
-    <div v-if="layout === 'grid'" class="tag-grid">
+  <section class="tag-section" v-if="tags.length">
+    <div :class="layoutClass">
       <button
         v-for="tag in tags"
         :key="tag.name"
         type="button"
-        class="tag-grid__item"
+        class="tag-chip"
         :class="{ active: tag.name === activeTag }"
+        :style="layout === 'cloud' ? { fontSize: fontSize(tag.count) } : undefined"
         @click="toggleTag(tag.name)"
       >
         <span>#{{ tag.name }}</span>
-        <span>{{ tag.count }}</span>
+        <span class="count">{{ tag.count }}</span>
       </button>
     </div>
-    <div v-else class="tag-cloud">
-      <button
-        v-for="tag in tags"
-        :key="tag.name"
-        type="button"
-        class="tag-cloud__item"
-        :style="{ fontSize: fontSize(tag.count) }"
-        :class="{ active: tag.name === activeTag }"
-        @click="toggleTag(tag.name)"
-      >
-        #{{ tag.name }}
-      </button>
-    </div>
-    <div class="category-posts" v-if="activeTag">
-      <div class="category-posts__title">#{{ activeTag }} 的相关内容</div>
+    <div class="tag-section__content" v-if="activeTag">
+      <div class="tag-section__title">#{{ activeTag }} 的相关内容</div>
       <PostList :tag="activeTag" />
     </div>
   </section>
+  <p v-else class="empty">暂时没有标签。</p>
 </template>
 
 <script setup lang="ts">
@@ -59,4 +48,8 @@ const fontSize = (count: number) => {
 const toggleTag = (name: string) => {
   activeTag.value = activeTag.value === name ? '' : name
 }
+
+const layoutClass = computed(() =>
+  props.layout === 'cloud' ? 'tag-cloud tag-cloud--floating' : 'tag-cloud tag-cloud--grid'
+)
 </script>

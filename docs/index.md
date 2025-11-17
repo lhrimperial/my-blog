@@ -2,28 +2,61 @@
 layout: home
 hero:
   name: 长发人的花园
-  text: 自然、纯净的个人博客
-  tagline: 分享前端开发、产品思考与生活方式的片段。
+  tagline: 用代码种花，用文字浇灌 | 记录前端开发、产品思考与生活美学的个人空间
   actions:
     - theme: brand
-      text: 最近更新
-      link: /posts/welcome-to-my-blog
+      text: 🚀 开始探索
+      link: /posts/
     - theme: alt
-      text: 分类导航
-      link: /categories
+      text: 👤 关于作者
+      link: /about
 features:
-  - title: 技术生长
-    details: 记录在前端、全栈、效率工具上的一点一滴。
-  - title: 创意生活
-    details: 旅行、摄影、生活方式等灵感随笔。
-  - title: 轻松阅读
-    details: 所有文章都以 Markdown 编写，结构清晰，方便沉浸阅读。
+  - title: 💻 技术分享
+    details: 探索前端开发、Vite 生态、设计系统等技术前沿，记录实践心得
+  - title: 🎨 产品设计
+    details: 分享产品思维、用户体验设计、视觉美学等创作心得
+  - title: 📚 生活美学
+    details: 记录阅读感悟、旅行见闻、摄影作品等生活体验
+  - title: ✍️ 写作思考
+    details: 坚持长期写作，用文字梳理思考，与读者真诚交流
 ---
 
-## 最新文章
+## 🌟 最新文章
 
-<PostList :limit="4" />
+<PostList :limit="6" />
 
-## 温柔提醒
+<div class="home-more">
+  <a href="/posts/">📚 查看全部文章 →</a>
+</div>
 
-> 这个博客还在持续进化中，欢迎收藏或在 GitHub 上 star 支持。
+## 📊 内容分类
+
+<CategoryList />
+
+## 🏷️ 热门标签
+
+<TagList layout="cloud" />
+
+## 💡 写在前面
+
+> 欢迎来到我的个人博客！这里是我记录学习、思考和创作的地方。
+> 
+> 我相信 **写作是最好的思考方式**，而分享是最有效的学习方式。
+> 在这个花园里，我希望能够：
+> - 📝 用文字梳理技术理解
+> - 🎯 分享产品设计心得  
+> - 🌱 记录个人成长轨迹
+> - 💬 与更多朋友交流碰撞
+> 
+> 📮 **博客支持 RSS 订阅**：
+> - 订阅地址：[/rss.xml](/rss.xml)
+> - 使用 RSS 阅读器可以及时获取最新文章
+> - 支持邮件订阅通知
+
+## 🔗 快速链接
+
+- [📝 全部文章](/posts/)
+- [📂 内容分类](/categories/)
+- [🏷️ 标签云](/tags/)
+- [👤 关于作者](/about/)
+- [📚 GitHub 仓库](https://github.com/lhrimperial/my-blog)

@@ -21,9 +21,10 @@ export type PostSummary = {
   cover?: string
 }
 
-const modules = import.meta.glob('../../posts/*.md', { eager: true })
+const modules = import.meta.glob('../../../posts/*.md', { eager: true })
 
 const normalizedPosts: PostSummary[] = Object.entries(modules)
+  .filter(([path]) => !/\/index\.md$/.test(path))
   .map(([path, module]) => {
     const mod = module as MarkdownModule
     const pageData = mod.__pageData ?? {}
@@ -31,7 +32,7 @@ const normalizedPosts: PostSummary[] = Object.entries(modules)
       ...(mod.frontmatter ?? {}),
       ...(pageData.frontmatter ?? {})
     }
-    const slug = path.replace('../../posts/', '').replace(/\.md$/, '')
+    const slug = path.replace(/^.*\/posts\//, '').replace(/\.md$/, '')
     const rawDate = combinedFrontmatter.date ?? ''
     const safeDate = rawDate && dayjs(rawDate).isValid() ? rawDate : ''
 
@@ -42,7 +43,7 @@ const normalizedPosts: PostSummary[] = Object.entries(modules)
       tags: Array.isArray(combinedFrontmatter.tags) ? combinedFrontmatter.tags : [],
       date: safeDate,
       formattedDate: safeDate ? dayjs(safeDate).format('YYYY 年 MM 月 DD 日') : '未注明',
-      url: `/posts/${slug}`,
+      url: `/${slug}`,
       cover: combinedFrontmatter.cover
     }
   })
