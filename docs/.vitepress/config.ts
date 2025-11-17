@@ -29,10 +29,8 @@ export default defineConfig({
       {
         text: '💡 更多',
         items: [
-          { text: '📊 归档', link: '/archive' },
-          { text: '📂 分类', link: '/categories' },
-          { text: '🏷️ 标签', link: '/tags' },
-          { text: '👤 关于', link: '/about' }
+          { text: '📈 统计', link: '/stats' },
+          { text: '🔗 友情链接', link: '/links' }
         ]
       }
     ],

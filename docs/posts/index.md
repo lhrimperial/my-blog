@@ -11,7 +11,7 @@ description: 浏览博客的所有文章，按发布时间、分类和标签筛�
 
 <PostList />
 
-## 📊 内容分类
+## 📂 内容分类导航
 
 <CategoryList />
 
