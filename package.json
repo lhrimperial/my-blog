@@ -21,7 +21,8 @@
   },
   "homepage": "https://lhrimperial.github.io/my-blog/",
   "devDependencies": {
-    "vitepress": "^1.6.4"
+    "vitepress": "^1.6.4",
+    "typescript": "^5.6.3"
   },
   "dependencies": {
     "dayjs": "^1.11.19",

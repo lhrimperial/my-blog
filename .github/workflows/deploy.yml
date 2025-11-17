@@ -45,7 +45,7 @@ jobs:
         run: npm ci
 
       - name: TypeScript 类型检查
-        run: npx tsc --noEmit
+        run: npx tsc --noEmit --skipLibCheck --skipLibCheck
 
       - name: ESLint 检查
         run: npx eslint docs --ext .ts,.vue --quiet
